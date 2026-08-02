@@ -1,0 +1,2687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulario de registro de envíos de muestras.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #f5f5f7;
+    --page-bg: #f5f5f7;
+    --card-bg: #ffffff;
+    --input-bg: #f2f2f4;
+    --input-border: #e4e4e7;
+    --text-main: #1d1d1f;
+    --text-label: #6e6e73;
+    --text-placeholder: #a1a1a6;
+    --blue-accent: #0071e3;
+    --navy: #0b1f4d;
+    --navy-hover: #0f2a63;
+    --green: #1fae5c;
+    --green-hover: #199249;
+    --divider: #e8e8ed;
+    --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.03);
+    --shadow-lg: 0 12px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+    --shadow-btn: 0 1px 2px rgba(11,31,77,0.15), 0 4px 10px rgba(11,31,77,0.18);
+    --toggle-bg: #e4e4e7;
+    --toggle-thumb: #ffffff;
+  }
+
+  [data-theme="dark"]{
+    --bg: #000000;
+    --page-bg: #000000;
+    --card-bg: #1c1c1e;
+    --input-bg: #2c2c2e;
+    --input-border: #3a3a3c;
+    --text-main: #f5f5f7;
+    --text-label: #98989d;
+    --text-placeholder: #6e6e73;
+    --blue-accent: #0a84ff;
+    --navy: #2a4a8f;
+    --navy-hover: #35569e;
+    --green: #30d158;
+    --green-hover: #28b34a;
+    --divider: #2c2c2e;
+    --shadow: 0 1px 2px rgba(0,0,0,0.25), 0 2px 10px rgba(0,0,0,0.3);
+    --shadow-lg: 0 16px 40px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3);
+    --shadow-btn: 0 2px 10px rgba(0,0,0,0.4);
+    --toggle-bg: #3a3a3c;
+    --toggle-thumb: #1c1c1e;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html{ background: var(--page-bg); }
+
+  body{
+    margin: 0;
+    font-family: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--page-bg);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    padding: 28px 0 80px;
+    transition: background 0.3s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .phone{
+    width: 100%;
+    max-width: 460px;
+    padding: 0 20px;
+    transition: max-width 0.2s ease;
+  }
+
+  /* ---------- THEME TOGGLE ---------- */
+  .theme-toggle-row{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 6px;
+  }
+
+  .theme-toggle{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--card-bg);
+    border: 1px solid var(--divider);
+    border-radius: 20px;
+    padding: 6px 10px 6px 12px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text-label);
+    user-select: none;
+  }
+
+  .switch{
+    width: 40px;
+    height: 24px;
+    border-radius: 20px;
+    background: var(--toggle-bg);
+    position: relative;
+    transition: background 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .switch::after{
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--toggle-thumb);
+    top: 2px;
+    left: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    transition: transform 0.25s ease, background 0.25s ease;
+  }
+
+  [data-theme="dark"] .switch::after{
+    transform: translateX(16px);
+  }
+
+  /* ---------- HEADER ---------- */
+  .header{
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 10px 0 24px;
+  }
+
+  .logo{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    border: 1px solid var(--divider);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--navy);
+    flex-shrink: 0;
+    text-align: center;
+    line-height: 1.1;
+    box-shadow: var(--shadow);
+  }
+
+  .header-text{ flex: 1; min-width: 0; }
+
+  .badge{
+    display: inline-block;
+    background: var(--blue-accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .title{
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    margin: 2px 0 4px;
+  }
+
+  .subtitle{
+    font-size: 13px;
+    color: var(--text-label);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ---------- SECTIONS ---------- */
+  .section{
+    margin-top: 24px;
+  }
+
+  .section-title{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--blue-accent);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+
+  .section-title::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 22px;
+    height: 2.5px;
+    border-radius: 2px;
+    background: var(--blue-accent);
+    opacity: 0.55;
+  }
+
+  .section-plus-title{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--green);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+
+  .section-plus-title::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 22px;
+    height: 2.5px;
+    border-radius: 2px;
+    background: var(--green);
+    opacity: 0.55;
+  }
+
+  .field{
+    margin-bottom: 14px;
+  }
+
+  .field label{
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    color: var(--text-label);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .field input[type="text"],
+  .field input[type="date"],
+  .field input[type="time"],
+  .field input[type="number"]{
+    width: 100%;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 15px;
+    color: var(--text-main);
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.2s ease, background 0.3s ease;
+  }
+
+  .field input:focus{
+    border-color: var(--blue-accent);
+    box-shadow: 0 0 0 4px rgba(0,113,227,0.12);
+    background: var(--card-bg);
+  }
+
+  .field input::placeholder{
+    color: var(--text-placeholder);
+  }
+
+  /* ---------- LOCKED SELECT FIELDS ---------- */
+  .select-wrap{
+    position: relative;
+  }
+
+  .select-wrap select{
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
+    padding: 14px 40px 14px 16px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--text-main);
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.3s ease;
+  }
+
+  .select-wrap select:focus{
+    border-color: var(--blue-accent);
+    box-shadow: 0 0 0 4px rgba(0,113,227,0.12);
+  }
+
+  .select-wrap::after{
+    content: "";
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid var(--text-label);
+    border-bottom: 2px solid var(--text-label);
+    transform: translateY(-65%) rotate(45deg);
+    pointer-events: none;
+  }
+
+  .lock-hint{
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-placeholder);
+    text-transform: none;
+    letter-spacing: 0;
+    margin-left: 6px;
+  }
+
+  /* ---------- ETIQUETA + BOTÓN DE ACCIÓN (ej. Gestionar N° Junta JVPLC) ---------- */
+  .field-label-row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .manage-btn{
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text-label);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .manage-btn:hover{
+    background: var(--divider);
+    color: var(--text-main);
+  }
+
+  /* ---------- MODAL: Gestionar N° Junta JVPLC ---------- */
+  .modal-overlay{
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.45);
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .modal-overlay.open{
+    display: flex;
+    opacity: 1;
+  }
+
+  .modal-card{
+    width: 100%;
+    max-width: 420px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 22px;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(8px);
+    transition: transform 0.25s ease;
+  }
+
+  .modal-overlay.open .modal-card{
+    transform: translateY(0);
+  }
+
+  .modal-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .modal-header h3{
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.1px;
+  }
+
+  .modal-close{
+    border: none;
+    background: var(--input-bg);
+    color: var(--text-label);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s ease;
+  }
+  .modal-close:hover{ background: var(--divider); }
+
+  .modal-list{
+    list-style: none;
+    margin: 0 0 14px;
+    padding: 0;
+    border: 1px solid var(--divider);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .modal-list li{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 11px 14px;
+    font-size: 14px;
+    color: var(--text-main);
+    background: var(--input-bg);
+    border-bottom: 1px solid var(--divider);
+  }
+  .modal-list li:last-child{ border-bottom: none; }
+
+  .modal-list .modal-empty{
+    color: var(--text-placeholder);
+    font-size: 13px;
+    justify-content: center;
+  }
+
+  .modal-delete-btn{
+    border: none;
+    background: transparent;
+    color: var(--text-placeholder);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .modal-delete-btn:hover{
+    background: rgba(255,59,48,0.12);
+    color: #ff3b30;
+  }
+
+  .modal-add-row{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .modal-add-row input{
+    width: 100%;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--text-main);
+    outline: none;
+  }
+  .modal-add-row input:focus{
+    border-color: var(--blue-accent);
+    box-shadow: 0 0 0 4px rgba(0,113,227,0.12);
+  }
+
+  .modal-add-btn{
+    width: 100%;
+    margin-bottom: 0;
+  }
+
+  .modal-hint{
+    margin: 12px 0 0;
+    font-size: 11.5px;
+    color: var(--text-placeholder);
+    line-height: 1.4;
+  }
+
+  .unit-wrap{
+    position: relative;
+  }
+  .unit-wrap input{
+    padding-right: 42px;
+  }
+  .unit-suffix{
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-label);
+    font-size: 14px;
+    pointer-events: none;
+  }
+
+  /* ---------- STEPPER (MUESTRAS) ---------- */
+  .stepper-field label{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: uppercase;
+  }
+
+  .dot{
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .dot-dorado{ background: #eab308; }
+  .dot-morado{ background: #a855f7; }
+  .dot-alicuota{ background: #3b82f6; }
+
+  .stepper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
+    padding: 6px;
+  }
+
+  .stepper button{
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: none;
+    background: var(--card-bg);
+    box-shadow: var(--shadow);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-label);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+    font-family: inherit;
+  }
+  .stepper button:active{ transform: scale(0.92); }
+
+  .stepper .value{
+    width: 48px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-main);
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    -moz-appearance: textfield;
+  }
+
+  .stepper .value:focus{
+    color: var(--blue-accent);
+  }
+
+  /* Ocultar las flechas nativas del input number */
+  .stepper .value::-webkit-outer-spin-button,
+  .stepper .value::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* ---------- BUTTONS ---------- */
+  .btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    padding: 15px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 12px;
+    color: #fff;
+    font-family: inherit;
+    transition: background 0.2s ease, transform 0.12s ease, box-shadow 0.2s ease;
+    letter-spacing: 0.1px;
+  }
+  .btn:active{ transform: scale(0.98); }
+
+  .btn-navy{
+    background: linear-gradient(180deg, #14295c, var(--navy));
+    box-shadow: var(--shadow-btn);
+  }
+  .btn-navy:hover{
+    background: linear-gradient(180deg, #1a3272, var(--navy-hover));
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(11,31,77,0.28);
+  }
+
+  .btn-green{
+    background: linear-gradient(180deg, #22c168, var(--green));
+    box-shadow: 0 2px 10px rgba(31,174,92,0.25);
+  }
+  .btn-green:hover{
+    background: linear-gradient(180deg, #28d072, var(--green-hover));
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(31,174,92,0.32);
+  }
+
+  .btn-ghost{
+    background: var(--input-bg);
+    color: var(--text-label);
+    border: 1px solid var(--input-border);
+    box-shadow: none;
+  }
+  .btn-ghost:hover{
+    background: var(--divider);
+  }
+
+  /* ---------- SELLO CARD ---------- */
+  .sello-card{
+    background: var(--card-bg);
+    border: 1px solid var(--divider);
+    border-radius: 18px;
+    padding: 20px 18px;
+    box-shadow: var(--shadow);
+  }
+
+  .dropzone{
+    border: 1.5px dashed var(--input-border);
+    border-radius: 14px;
+    padding: 30px 16px;
+    text-align: center;
+    background: var(--input-bg);
+    margin-bottom: 14px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .dropzone:hover{
+    border-color: var(--blue-accent);
+  }
+
+  .dropzone.drag-over{
+    border-color: var(--blue-accent);
+    background: rgba(0,113,227,0.06);
+  }
+
+  .dropzone .icon{
+    width: 42px;
+    height: 42px;
+    margin: 0 auto 12px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #fde68a, #93c5fd);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+  }
+
+  .dropzone .main-text{
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-main);
+    margin-bottom: 4px;
+  }
+
+  .dropzone .sub-text{
+    font-size: 12px;
+    color: var(--text-placeholder);
+  }
+
+  .dz-preview{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .dz-preview img{
+    max-width: 100%;
+    max-height: 130px;
+    border-radius: 10px;
+    object-fit: contain;
+    box-shadow: var(--shadow);
+    background: var(--card-bg);
+  }
+
+  .dz-remove{
+    border: none;
+    background: none;
+    color: var(--text-label);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 8px;
+  }
+  .dz-remove:hover{
+    background: var(--divider);
+    color: var(--text-main);
+  }
+
+  .dz-status{
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    margin: -6px 0 12px;
+    min-height: 0;
+    transition: opacity 0.2s ease;
+  }
+  .dz-status.success{ color: var(--green); }
+  .dz-status.error{ color: #ff3b30; }
+
+  /* ---------- MX — Derrame de muestra ---------- */
+  .mx-divider{
+    height: 1px;
+    background: var(--divider);
+    margin: 14px 0;
+  }
+
+  .mx-row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 0;
+  }
+
+  .mx-row label{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    color: var(--text-label);
+    text-transform: uppercase;
+    margin-bottom: 0;
+  }
+
+  .mx-row .field-hint{
+    text-transform: none;
+    font-weight: 500;
+  }
+
+  .segmented{
+    display: flex;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 11px;
+    padding: 3px;
+    gap: 3px;
+    flex-shrink: 0;
+  }
+
+  .seg-btn{
+    border: none;
+    background: transparent;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--text-label);
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .seg-btn.active[data-value="no"]{
+    background: var(--card-bg);
+    color: var(--text-main);
+    box-shadow: var(--shadow);
+  }
+
+  .seg-btn.active[data-value="si"]{
+    background: #ff3b30;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(255,59,48,0.3);
+  }
+
+  .mx-details{
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    transition: max-height 0.35s ease, opacity 0.3s ease, margin-top 0.3s ease;
+  }
+
+  .mx-details.open{
+    max-height: 220px;
+    opacity: 1;
+    margin-top: 14px;
+  }
+
+  .field-hint{
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: none;
+    color: var(--text-placeholder);
+    margin-left: 4px;
+  }
+
+  .card-group{
+    background: var(--card-bg);
+    border: 1px solid var(--divider);
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.25s ease;
+  }
+
+  /* ---------- TABLA DE REGISTROS ---------- */
+  .records-toolbar{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .records-filter{
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .records-filter label{
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-label);
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    margin-bottom: 8px;
+  }
+
+  .records-refresh{
+    width: auto;
+    margin-bottom: 0;
+    padding: 12px 18px;
+    white-space: nowrap;
+  }
+
+  .charts-row{
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .chart-box{
+    flex: 1;
+    min-width: 240px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 14px;
+    padding: 14px;
+  }
+
+  .chart-title{
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-label);
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .chart-canvas-wrap{
+    position: relative;
+    height: 200px;
+  }
+
+  .chart-fallback{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-placeholder);
+    padding: 0 12px;
+  }
+
+  .records-table-wrap{
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid var(--divider);
+  }
+
+  .records-table{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .records-table thead th{
+    position: sticky;
+    top: 0;
+    background: var(--input-bg);
+    color: var(--text-label);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .records-table tbody td{
+    padding: 11px 14px;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .records-table tbody tr:last-child td{
+    border-bottom: none;
+  }
+
+  .records-table tbody tr:nth-child(even){
+    background: var(--input-bg);
+  }
+
+  .records-empty{
+    text-align: center;
+    color: var(--text-placeholder);
+    padding: 24px 14px !important;
+    white-space: normal !important;
+  }
+
+  /* Row layout: stacked by default (mobile), side by side on desktop */
+  .field-row{
+    display: flex;
+    flex-direction: column;
+  }
+  .field-row .field{
+    flex: 1;
+  }
+
+  /* ============================================================
+     RESPONSIVE: comprimido en móvil, más amplio en escritorio
+     ============================================================ */
+
+  /* Móvil pequeño: aún más compacto */
+  @media (max-width: 380px){
+    body{ padding: 18px 0 60px; }
+    .phone{ padding: 0 14px; }
+    .title{ font-size: 19px; }
+    .section{ margin-top: 18px; }
+    .card-group{ padding: 13px; }
+    .field{ margin-bottom: 11px; }
+    .field input, .select-wrap select{ padding: 11px 14px; font-size: 14px; }
+    .select-wrap select{ padding-right: 36px; }
+    .btn{ padding: 13px; font-size: 14px; }
+    .records-table{ font-size: 12px; }
+    .records-table thead th, .records-table tbody td{ padding: 9px 10px; }
+    .charts-row{ gap: 12px; }
+    .chart-box{ min-width: 100%; padding: 11px; }
+    .chart-canvas-wrap{ height: 170px; }
+  }
+
+  /* Escritorio: layout más amplio, campos relacionados en fila */
+  @media (min-width: 768px){
+    .phone{
+      max-width: 640px;
+      padding: 0 32px;
+    }
+
+    body{ padding: 40px 0 100px; }
+
+    .header{ padding: 14px 0 30px; }
+    .title{ font-size: 25px; }
+
+    .card-group{ padding: 22px; }
+    .sello-card{ padding: 26px 24px; }
+
+    .field-row{
+      flex-direction: row;
+      gap: 16px;
+    }
+
+    .section{ margin-top: 30px; }
+
+    .field input, .select-wrap select{
+      padding: 15px 18px;
+      font-size: 15.5px;
+    }
+
+    .btn{
+      padding: 16px;
+    }
+
+    /* Two-column grid for the sample steppers on wide screens */
+    .muestras-grid{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 16px;
+    }
+  }
+
+  /* ---------- DASHBOARD (contenedor de columnas) ---------- */
+  /* Móvil/tablet: comportamiento normal en bloque, mismo orden vertical de siempre */
+  .dashboard-grid{
+    display: block;
+  }
+  .col{
+    display: block;
+  }
+
+  /* ============================================================
+     ESCRITORIO — todo en una sola pantalla, sin scroll, horizontal
+     ============================================================ */
+  @media (min-width: 1024px){
+    html{
+      height: auto;
+    }
+    body{
+      min-height: 100vh;
+      overflow-y: auto;
+    }
+
+    body{
+      align-items: flex-start;
+      padding: 18px 26px;
+    }
+
+    .phone{
+      max-width: 1680px;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
+
+    .theme-toggle-row{ margin-bottom: 4px; }
+
+    .header{ padding: 4px 0 12px; flex-shrink: 0; }
+    .logo{ width: 38px; height: 38px; font-size: 10px; }
+    .badge{ font-size: 10px; padding: 4px 10px; margin-bottom: 5px; }
+    .title{ font-size: 18px; }
+    .subtitle{ font-size: 11px; }
+
+    /* 3 columnas asimétricas: un panel de contexto angosto, un área central
+       de trabajo más ancha, y un panel de acciones a la derecha — como los
+       paneles laterales de macOS (Finder, Ajustes, Fotos). */
+    .dashboard-grid{
+      display: grid;
+      grid-template-columns: minmax(240px, 300px) minmax(0, 1fr) minmax(300px, 360px);
+      gap: 18px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .col{
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 0;
+      overflow: auto;
+    }
+
+    /* Embalaje + Transporte, lado a lado bajo Muestras — altura natural, sin estirarse */
+    .sub-row{
+      display: flex;
+      gap: 12px;
+      flex: 0 0 auto;
+      align-items: flex-start;
+    }
+    .sub-row .section{
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .sub-row .card-group{ height: fit-content; }
+
+    /* Que la columna central no se estire de más: el resto del espacio libre
+       queda como aire, no forzado dentro de las tarjetas */
+    .col-b{ justify-content: flex-start; }
+
+    .section{ margin-top: 0; }
+
+    .section-title, .section-plus-title{
+      font-size: 10.5px;
+      padding-bottom: 5px;
+      margin-bottom: 8px;
+    }
+
+    .card-group{ padding: 11px; }
+    .sello-card{ padding: 14px 12px; }
+
+    .field{ margin-bottom: 8px; }
+    .field label{ font-size: 9.5px; margin-bottom: 4px; }
+
+    .field input[type="text"],
+    .field input[type="date"],
+    .field input[type="time"],
+    .field input[type="number"],
+    .select-wrap select{
+      padding: 8px 10px;
+      font-size: 12.5px;
+    }
+
+    .select-wrap select{ padding-right: 32px; }
+    .select-wrap::after{ right: 12px; width: 7px; height: 7px; }
+
+    .unit-wrap input{ padding-right: 34px; }
+    .unit-suffix{ right: 12px; font-size: 12px; }
+
+    .field-row{ gap: 10px; }
+    .muestras-grid{ gap: 0 10px; }
+
+    .stepper{ padding: 4px; }
+    .stepper button{ width: 25px; height: 25px; font-size: 13px; }
+    .stepper .value{ font-size: 13px; }
+
+    .btn{ padding: 9px; font-size: 12.5px; margin-bottom: 8px; }
+
+    .dropzone{ padding: 10px 8px; margin-bottom: 8px; }
+    .dropzone .icon{ width: 26px; height: 26px; font-size: 12px; margin-bottom: 5px; }
+    .dropzone .main-text{ font-size: 11.5px; }
+    .dropzone .sub-text{ font-size: 10px; }
+
+    .lock-hint, .field-hint{ font-size: 9px; }
+
+    .mx-divider{ margin: 10px 0; }
+    .mx-row label{ font-size: 9.5px; }
+    .seg-btn{ padding: 6px 12px; font-size: 11.5px; }
+    .mx-details.open{ margin-top: 10px; }
+
+    #registrosSection{
+      margin-top: 26px;
+      flex-shrink: 0;
+    }
+
+    .chart-canvas-wrap{ height: 170px; }
+  }
+
+  /* ============================================================
+     LOADING SCREEN — estilo Apple
+     ============================================================ */
+  #loader{
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--page-bg);
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+  }
+
+  #loader.hidden{
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .loader-mark{
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    background: var(--card-bg);
+    border: 1px solid var(--divider);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin-bottom: 28px;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+
+  @keyframes pulse{
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.06); opacity: 0.85; }
+  }
+
+  .loader-spinner{
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2.5px solid var(--input-border);
+    border-top-color: var(--blue-accent);
+    animation: spin 0.85s linear infinite;
+    margin-bottom: 18px;
+  }
+
+  @keyframes spin{
+    to { transform: rotate(360deg); }
+  }
+
+  .loader-text{
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-label);
+    letter-spacing: 0.2px;
+  }
+
+  /* Contenido principal: aparece con una transición suave tras la carga */
+  .phone{
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  .phone.revealed{
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loader">
+  <div class="loader-mark">🩸</div>
+  <div class="loader-spinner"></div>
+  <div class="loader-text">Cargando formulario espere por favor...</div>
+</div>
+
+<!-- MODAL: Gestionar N° Junta JVPLC -->
+<div class="modal-overlay" id="juntaModalOverlay">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="juntaModalTitle">
+    <div class="modal-header">
+      <h3 id="juntaModalTitle">Gestionar N° Junta JVPLC</h3>
+      <button type="button" class="modal-close" id="juntaModalClose" aria-label="Cerrar">✕</button>
+    </div>
+
+    <ul class="modal-list" id="juntaModalList"></ul>
+    <div class="dz-status" id="juntaModalStatus"></div>
+
+    <div class="modal-add-row">
+      <input type="text" id="juntaModalInput" placeholder="Ej: Ana Pérez 1234" maxlength="80">
+      <button type="button" class="btn btn-navy modal-add-btn" id="juntaModalAddBtn">Agregar</button>
+    </div>
+
+    <p class="modal-hint">Los cambios se guardan directamente en la hoja de cálculo y quedan disponibles de inmediato para todos.</p>
+  </div>
+</div>
+
+<!-- MODAL: Gestionar Transportista -->
+<div class="modal-overlay" id="transportistaModalOverlay">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="transportistaModalTitle">
+    <div class="modal-header">
+      <h3 id="transportistaModalTitle">Gestionar Transportista</h3>
+      <button type="button" class="modal-close" id="transportistaModalClose" aria-label="Cerrar">✕</button>
+    </div>
+
+    <ul class="modal-list" id="transportistaModalList"></ul>
+    <div class="dz-status" id="transportistaModalStatus"></div>
+
+    <div class="modal-add-row">
+      <input type="text" id="transportistaModalInput" placeholder="Ej: Carlos Ramírez" maxlength="80">
+      <button type="button" class="btn btn-navy modal-add-btn" id="transportistaModalAddBtn">Agregar</button>
+    </div>
+
+    <p class="modal-hint">Los cambios se guardan directamente en la hoja de cálculo y quedan disponibles de inmediato para todos.</p>
+  </div>
+</div>
+
+<div class="phone" id="mainContent">
+
+  <!-- THEME TOGGLE -->
+  <div class="theme-toggle-row">
+    <div class="theme-toggle" id="themeToggle" role="button" tabindex="0" aria-label="Cambiar entre modo claro y oscuro">
+      <span id="themeLabel">Modo claro</span>
+      <div class="switch"></div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo"> 🩸 Analiza</div>
+    <div class="header-text">
+      <span class="badge">Registro de envio de muestras</span>
+      <div class="title" id="greetingTitle">Sonsonate 2 L020</div>
+      <div class="subtitle">Estimado usuario complete todos los campos del formulario para registrar.</div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD: en móvil fluye vertical normal; en escritorio se acomoda en columnas horizontales -->
+  <div class="dashboard-grid">
+
+    <div class="col col-a">
+      <!-- IDENTIFICACIÓN -->
+      <div class="section">
+        <div class="section-title">Identificación</div>
+        <div class="card-group">
+          <div class="field-row">
+            <div class="field">
+              <label>Sucursal</label>
+              <div class="select-wrap">
+                <select id="sucursal">
+                  <option value="" disabled selected>Seleccionar...</option>
+                  <option value="Sonsonate-Cara Sucia-L043">Sonsonate-Cara Sucia-L043</option>
+                  <option value="SS - Lourdes - L012">SS - Lourdes - L012</option>
+                  <option value="SS - Opico - L019">SS - Opico - L019</option>
+                  <option value="SS- Mall Marsella- L040">SS- Mall Marsella- L040</option>
+                  <option value="Sta Ana - Ahuachapán-L044">Sta Ana - Ahuachapán-L044</option>
+                  <option value="Sta Ana - Metapan - L014">Sta Ana - Metapan - L014</option>
+                  <option value="Sta Ana - Santa Ana 1 - L008">Sta Ana - Santa Ana 1 - L008</option>
+                  <option value="Sta Ana - Santa Ana 2 - L013">Sta Ana - Santa Ana 2 - L013</option>
+                  <option value="Sta Ana - Sonsonate 1 - L006">Sta Ana - Sonsonate 1 - L006</option>
+                  <option value="Sta Ana - Sonsonate 2 - L020">Sta Ana - Sonsonate 2 - L020</option>
+                  <option value="Sta. Ana - Ramblas Santa Ana - L032">Sta. Ana - Ramblas Santa Ana - L032</option>
+                  <option value="Sta. Ana - Sonsonate 3- L041">Sta. Ana - Sonsonate 3- L041</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field" style="margin-bottom:0;">
+              <label>Fecha de envío</label>
+              <input type="text" id="fechaEnvio" value="23/07/2026" maxlength="20" autocomplete="off">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESPONSABLE -->
+      <div class="section">
+        <div class="section-title">Responsable</div>
+        <div class="card-group">
+          <div class="field" style="margin-bottom:0;">
+            <div class="field-label-row">
+              <label style="margin-bottom:0;">N° Junta JVPLC <span class="lock-hint">desde Sheets</span></label>
+              <button type="button" class="manage-btn" id="btnGestionarJuntas" aria-label="Agregar o eliminar N° Junta JVPLC">⚙️ Gestionar</button>
+            </div>
+            <div class="select-wrap">
+              <select id="juntaJVPLC">
+                <option value="" disabled selected>Cargando...</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col col-b">
+      <!-- MUESTRAS -->
+      <div class="section">
+        <div class="section-title">Muestras</div>
+        <div class="card-group">
+          <div class="muestras-grid">
+            <div class="field stepper-field">
+              <label><span class="dot dot-dorado"></span>Dorados</label>
+              <div class="stepper">
+                <button type="button" class="minus" aria-label="Restar Dorados">–</button>
+                <input type="number" class="value" id="dorados" value="0" min="0" inputmode="numeric" aria-label="Cantidad Dorados">
+                <button type="button" class="plus" aria-label="Sumar Dorados">+</button>
+              </div>
+            </div>
+
+            <div class="field stepper-field">
+              <label><span class="dot dot-morado"></span>Morados</label>
+              <div class="stepper">
+                <button type="button" class="minus" aria-label="Restar Morados">–</button>
+                <input type="number" class="value" id="morados" value="0" min="0" inputmode="numeric" aria-label="Cantidad Morados">
+                <button type="button" class="plus" aria-label="Sumar Morados">+</button>
+              </div>
+            </div>
+
+            <div class="field stepper-field">
+              <label><span class="dot dot-alicuota"></span>Alícuotas</label>
+              <div class="stepper">
+                <button type="button" class="minus" aria-label="Restar Alícuotas">–</button>
+                <input type="number" class="value" id="alicuotas" value="0" min="0" inputmode="numeric" aria-label="Cantidad Alícuotas">
+                <button type="button" class="plus" aria-label="Sumar Alícuotas">+</button>
+              </div>
+            </div>
+
+            <div class="field stepper-field">
+              <label>Cultivos</label>
+              <div class="stepper">
+                <button type="button" class="minus" aria-label="Restar Cultivos">–</button>
+                <input type="number" class="value" id="cultivos" value="0" min="0" inputmode="numeric" aria-label="Cantidad Cultivos">
+                <button type="button" class="plus" aria-label="Sumar Cultivos">+</button>
+              </div>
+            </div>
+
+            <div class="field stepper-field">
+              <label>Orina en tubo (pruebas químicas)</label>
+              <div class="stepper">
+                <button type="button" class="minus" aria-label="Restar Orina en tubo">–</button>
+                <input type="number" class="value" id="orinaTubo" value="0" min="0" inputmode="numeric" aria-label="Cantidad Orina en tubo">
+                <button type="button" class="plus" aria-label="Sumar Orina en tubo">+</button>
+              </div>
+            </div>
+
+            <div class="field stepper-field" style="margin-bottom:0;">
+              <label>Alícuotas de suero</label>
+              <div class="stepper">
+                <button type="button" class="minus" aria-label="Restar Alícuotas de suero">–</button>
+                <input type="number" class="value" id="alicuotasSuero" value="0" min="0" inputmode="numeric" aria-label="Cantidad Alícuotas de suero">
+                <button type="button" class="plus" aria-label="Sumar Alícuotas de suero">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="mx-divider"></div>
+
+          <div class="mx-row">
+            <label>MX <span class="field-hint">¿Se derramó alguna muestra?</span></label>
+            <div class="segmented" id="mxSegmented">
+              <button type="button" class="seg-btn active" data-value="no">No</button>
+              <button type="button" class="seg-btn" data-value="si">Sí</button>
+            </div>
+          </div>
+
+          <div class="mx-details" id="mxDetails">
+            <div class="field">
+              <label>Nombre del paciente</label>
+              <input type="text" id="mxNombrePaciente" placeholder="Escribir nombre..." maxlength="120" autocomplete="off">
+            </div>
+            <div class="field" style="margin-bottom:0;">
+              <label>Código</label>
+              <input type="text" id="mxCodigo" placeholder="Ej: 0001" maxlength="40" autocomplete="off">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EMBALAJE + TRANSPORTE: en escritorio van lado a lado bajo Muestras -->
+      <div class="sub-row">
+        <!-- EMBALAJE -->
+        <div class="section">
+          <div class="section-title">Embalaje</div>
+          <div class="card-group">
+            <div class="field-row">
+              <div class="field">
+                <label>Hora preparación</label>
+                <input type="time" id="horaPreparacion">
+              </div>
+
+              <div class="field" style="margin-bottom:0;">
+                <label>Temperatura</label>
+                <div class="unit-wrap">
+                  <input type="text" id="temperatura" placeholder="0.0" maxlength="10" inputmode="decimal" autocomplete="off">
+                  <span class="unit-suffix">°C</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TRANSPORTE -->
+        <div class="section">
+          <div class="section-title">Transporte</div>
+          <div class="card-group">
+            <div class="field-row">
+              <div class="field">
+                <label>Hora contacto</label>
+                <input type="time" id="horaContacto">
+              </div>
+
+              <div class="field">
+                <label>Hora entrega</label>
+                <input type="time" id="horaEntrega">
+              </div>
+            </div>
+
+            <div class="field" style="margin-bottom:0;">
+              <div class="field-label-row">
+                <label style="margin-bottom:0;">Transportista <span class="lock-hint">desde Sheets</span></label>
+                <button type="button" class="manage-btn" id="btnGestionarTransportistas" aria-label="Agregar o eliminar Transportista">⚙️ Gestionar</button>
+              </div>
+              <div class="select-wrap">
+                <select id="transportista">
+                  <option value="" disabled selected>Cargando...</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col col-c">
+      <!-- REGISTRO -->
+      <div class="section">
+        <div class="section-title">Registro</div>
+
+        <button class="btn btn-navy" id="btnRegistrarEnvio">Registrar Envío</button>
+        <div class="dz-status" id="envioStatus"></div>
+        <button class="btn btn-navy" id="btnVerRegistro" style="margin-bottom:0;">Ver Registro en Sheets</button>
+      </div>
+
+      <!-- REGISTRAR NUEVO SELLO JVPL -->
+      <div class="section">
+        <div class="section-plus-title">Registrar nuevo sello JVPL</div>
+
+        <div class="sello-card">
+          <div class="field">
+            <label>Número de responsable</label>
+            <input type="text" id="numeroResponsable" placeholder="Ej: 0001" maxlength="40" autocomplete="off">
+          </div>
+
+          <div class="field">
+            <label>Imagen del sello <span class="field-hint">(opcional · JPG, PNG, WEBP · máx 5MB)</span></label>
+
+            <div class="dropzone" id="selloDropzone">
+              <div class="dz-empty" id="dzEmpty">
+                <div class="icon">🖼️</div>
+                <div class="main-text">Arrastra o haz clic</div>
+                <div class="sub-text">para seleccionar imagen</div>
+              </div>
+              <div class="dz-preview" id="dzPreview" style="display:none;">
+                <img id="dzPreviewImg" alt="Vista previa del sello">
+                <button type="button" class="dz-remove" id="dzRemoveBtn">✕ Quitar imagen</button>
+              </div>
+            </div>
+            <input type="file" id="selloFileInput" accept="image/*" hidden>
+            <div class="dz-status" id="dzStatus"></div>
+
+            <button class="btn btn-ghost" id="pasteBtn">Pegar desde portapapeles</button>
+          </div>
+
+          <button class="btn btn-green" id="btnGuardarSello" style="margin-bottom:0;">Guardar Sello</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- REGISTROS ENVIADOS -->
+  <div class="section" id="registrosSection">
+    <div class="section-title">Registros enviados</div>
+    <div class="card-group">
+
+      <div class="records-toolbar">
+        <div class="records-filter">
+          <label for="filtroTransportista">Filtrar por transportista</label>
+          <div class="select-wrap">
+            <select id="filtroTransportista">
+              <option value="">Todos</option>
+            </select>
+          </div>
+        </div>
+        <button type="button" class="btn btn-ghost records-refresh" id="btnRefrescarRegistros">Actualizar</button>
+      </div>
+
+      <div class="dz-status" id="registrosStatus"></div>
+
+      <div class="charts-row">
+        <div class="chart-box">
+          <div class="chart-title">Muestras por tipo</div>
+          <div class="chart-canvas-wrap">
+            <canvas id="chartMuestras"></canvas>
+          </div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-title">Envíos por transportista</div>
+          <div class="chart-canvas-wrap">
+            <canvas id="chartTransportista"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="records-table-wrap">
+        <table class="records-table" id="registrosTable">
+          <thead>
+            <tr id="registrosHeadRow"></tr>
+          </thead>
+          <tbody id="registrosBody">
+            <tr><td class="records-empty">Cargando registros...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js" onerror="window.__chartLoadFailed = true;"></script>
+<script>
+  'use strict';
+
+  const FORMULA_TRIGGER_CHARS = /^[=+\-@\t\r]/;
+
+  function sanitizarTexto(valor, maxLen){
+    if (typeof valor !== 'string') return valor;
+    let limpio = valor.trim();
+    if (FORMULA_TRIGGER_CHARS.test(limpio)){
+      limpio = "'" + limpio;
+    }
+    if (maxLen && limpio.length > maxLen){
+      limpio = limpio.slice(0, maxLen);
+    }
+    return limpio;
+  }
+
+  function sanitizarNumero(valor){
+    const n = parseInt(valor, 10);
+    if (isNaN(n) || n < 0) return 0;
+    if (n > 9999) return 9999;
+    return n;
+  }
+
+  const toggle = document.getElementById('themeToggle');
+  const label = document.getElementById('themeLabel');
+  const root = document.documentElement;
+
+  function applyTheme(theme){
+    root.setAttribute('data-theme', theme);
+    label.textContent = theme === 'dark' ? 'Modo oscuro' : 'Modo claro';
+    localStorage.setItem('theme', theme);
+  }
+
+  const saved = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(saved || (prefersDark ? 'dark' : 'light'));
+
+  toggle.addEventListener('click', () => {
+    const current = root.getAttribute('data-theme');
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+    if (typeof refreshChartColors === 'function') refreshChartColors();
+  });
+
+  toggle.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      toggle.click();
+    }
+  });
+
+  // ---------- CONTADORES +/- (Muestras) — también editables a mano ----------
+  document.querySelectorAll('.stepper').forEach(stepper => {
+    const valueInput = stepper.querySelector('.value');
+    const minusBtn = stepper.querySelector('.minus');
+    const plusBtn = stepper.querySelector('.plus');
+
+    const clamp = (n) => Math.max(0, isNaN(n) ? 0 : Math.floor(n));
+
+    minusBtn.addEventListener('click', () => {
+      valueInput.value = clamp(parseInt(valueInput.value, 10) - 1);
+    });
+
+    plusBtn.addEventListener('click', () => {
+      valueInput.value = clamp(parseInt(valueInput.value, 10) + 1);
+    });
+
+    // Si el usuario escribe directamente, se limpia a un entero válido >= 0
+    valueInput.addEventListener('input', () => {
+      const digitsOnly = valueInput.value.replace(/[^0-9]/g, '');
+      valueInput.value = digitsOnly;
+    });
+
+    valueInput.addEventListener('blur', () => {
+      valueInput.value = clamp(parseInt(valueInput.value, 10));
+    });
+  });
+
+  // ---------- SALUDO SEGÚN LA HORA ----------
+  const greetingTitle = document.getElementById('greetingTitle');
+  const hour = new Date().getHours();
+  let greeting = 'Buenas noches';
+  if (hour >= 5 && hour < 12) greeting = 'Buenos días';
+  else if (hour >= 12 && hour < 19) greeting = 'Buenas tardes';
+  greetingTitle.textContent = `${greeting}, Sonsonate 2 L020`;
+
+  // ---------- PANTALLA DE CARGA ----------
+  window.addEventListener('load', () => {
+    const loader = document.getElementById('loader');
+    const content = document.getElementById('mainContent');
+
+    setTimeout(() => {
+      loader.classList.add('hidden');
+      content.classList.add('revealed');
+    }, 900);
+  });
+
+  // ---------- MX: derrame de muestra (Sí/No) ----------
+  const mxSegmented = document.getElementById('mxSegmented');
+  const mxDetails = document.getElementById('mxDetails');
+
+  mxSegmented.addEventListener('click', (e) => {
+    const btn = e.target.closest('.seg-btn');
+    if (!btn) return;
+
+    mxSegmented.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    if (btn.dataset.value === 'si') {
+      mxDetails.classList.add('open');
+    } else {
+      mxDetails.classList.remove('open');
+      // Al volver a "No", limpiamos los campos para no dejar datos residuales
+      mxDetails.querySelectorAll('input').forEach(input => input.value = '');
+    }
+  });
+
+  // ---------- IMAGEN DEL SELLO: clic, arrastrar y pegar desde portapapeles ----------
+  const dropzone = document.getElementById('selloDropzone');
+  const dzEmpty = document.getElementById('dzEmpty');
+  const dzPreview = document.getElementById('dzPreview');
+  const dzPreviewImg = document.getElementById('dzPreviewImg');
+  const dzRemoveBtn = document.getElementById('dzRemoveBtn');
+  const dzStatus = document.getElementById('dzStatus');
+  const selloFileInput = document.getElementById('selloFileInput');
+  const pasteBtn = document.getElementById('pasteBtn');
+  let currentSelloBlob = null; // guarda el archivo/imagen actual para enviarlo al backend
+
+  function showDzStatus(message, type){
+    dzStatus.textContent = message;
+    dzStatus.className = 'dz-status ' + (type || '');
+    clearTimeout(showDzStatus._t);
+    showDzStatus._t = setTimeout(() => { dzStatus.textContent = ''; dzStatus.className = 'dz-status'; }, 3500);
+  }
+
+  function showSelloPreview(fileOrBlob){
+    if (!fileOrBlob.type || !fileOrBlob.type.startsWith('image/')){
+      showDzStatus('El archivo debe ser una imagen (JPG, PNG o WEBP).', 'error');
+      return;
+    }
+    if (fileOrBlob.size > 5 * 1024 * 1024){
+      showDzStatus('La imagen supera el máximo de 5 MB.', 'error');
+      return;
+    }
+    currentSelloBlob = fileOrBlob;
+    const url = URL.createObjectURL(fileOrBlob);
+    dzPreviewImg.src = url;
+    dzEmpty.style.display = 'none';
+    dzPreview.style.display = 'flex';
+    showDzStatus('Imagen cargada correctamente.', 'success');
+  }
+
+  function clearSelloPreview(){
+    currentSelloBlob = null;
+    dzPreviewImg.src = '';
+    dzPreview.style.display = 'none';
+    dzEmpty.style.display = 'block';
+    selloFileInput.value = '';
+  }
+
+  // Clic en la zona vacía abre el selector de archivos
+  dropzone.addEventListener('click', () => {
+    if (dzPreview.style.display === 'none' || !dzPreview.style.display){
+      selloFileInput.click();
+    }
+  });
+
+  selloFileInput.addEventListener('change', () => {
+    if (selloFileInput.files && selloFileInput.files[0]){
+      showSelloPreview(selloFileInput.files[0]);
+    }
+  });
+
+  dzRemoveBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    clearSelloPreview();
+  });
+
+  // Arrastrar y soltar
+  ['dragenter', 'dragover'].forEach(evt => {
+    dropzone.addEventListener(evt, (e) => {
+      e.preventDefault();
+      dropzone.classList.add('drag-over');
+    });
+  });
+  ['dragleave', 'drop'].forEach(evt => {
+    dropzone.addEventListener(evt, (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('drag-over');
+    });
+  });
+  dropzone.addEventListener('drop', (e) => {
+    const file = e.dataTransfer.files && e.dataTransfer.files[0];
+    if (file) showSelloPreview(file);
+  });
+
+  // Pegar desde portapapeles (imagen copiada previamente, ej. captura de pantalla)
+  pasteBtn.addEventListener('click', async () => {
+    if (!navigator.clipboard || !navigator.clipboard.read){
+      showDzStatus('Tu navegador no permite leer el portapapeles. Usa "Arrastra o haz clic".', 'error');
+      return;
+    }
+    try {
+      const items = await navigator.clipboard.read();
+      let found = false;
+
+      for (const item of items){
+        const imageType = item.types.find(t => t.startsWith('image/'));
+        if (imageType){
+          const blob = await item.getType(imageType);
+          showSelloPreview(blob);
+          found = true;
+          break;
+        }
+      }
+
+      if (!found){
+        showDzStatus('No hay ninguna imagen copiada en el portapapeles.', 'error');
+      }
+    } catch (err){
+      showDzStatus('No se pudo acceder al portapapeles. Revisa los permisos del navegador.', 'error');
+    }
+  });
+
+  // También permitir pegar con Ctrl+V mientras el cursor está sobre la zona
+  dropzone.setAttribute('tabindex', '0');
+  dropzone.addEventListener('paste', (e) => {
+    const items = e.clipboardData && e.clipboardData.items;
+    if (!items) return;
+    for (const item of items){
+      if (item.type.startsWith('image/')){
+        const blob = item.getAsFile();
+        if (blob) showSelloPreview(blob);
+        break;
+      }
+    }
+  });
+
+  // =====================================================================
+  // CONEXIÓN CON EL BACKEND (Código.gs) — google.script.run
+  // =====================================================================
+
+  function getSelectText(selectEl){
+    if (!selectEl || selectEl.selectedIndex < 0 || !selectEl.value) return '';
+    return selectEl.options[selectEl.selectedIndex].text;
+  }
+
+  function collectEnvioData(){
+    const mxActive = document.querySelector('#mxSegmented .seg-btn.active');
+    const mxValue = (mxActive && mxActive.dataset.value === 'si') ? 'Sí' : 'No';
+
+    return {
+      sucursal: getSelectText(document.getElementById('sucursal')),
+      fechaEnvio: sanitizarTexto(document.getElementById('fechaEnvio').value, 20),
+      juntaJVPLC: getSelectText(document.getElementById('juntaJVPLC')),
+      dorados: sanitizarNumero(document.getElementById('dorados').value),
+      morados: sanitizarNumero(document.getElementById('morados').value),
+      alicuotas: sanitizarNumero(document.getElementById('alicuotas').value),
+      cultivos: sanitizarNumero(document.getElementById('cultivos').value),
+      orinaTubo: sanitizarNumero(document.getElementById('orinaTubo').value),
+      alicuotasSuero: sanitizarNumero(document.getElementById('alicuotasSuero').value),
+      mx: mxValue,
+      mxNombrePaciente: sanitizarTexto(document.getElementById('mxNombrePaciente').value, 120),
+      mxCodigo: sanitizarTexto(document.getElementById('mxCodigo').value, 40),
+      horaPreparacion: document.getElementById('horaPreparacion').value,
+      temperatura: sanitizarTexto(document.getElementById('temperatura').value, 10),
+      horaContacto: document.getElementById('horaContacto').value,
+      horaEntrega: document.getElementById('horaEntrega').value,
+      transportista: getSelectText(document.getElementById('transportista'))
+    };
+  }
+
+  // ---------- REGISTRAR ENVÍO ----------
+  const btnRegistrarEnvio = document.getElementById('btnRegistrarEnvio');
+  const envioStatus = document.getElementById('envioStatus');
+
+  function showEnvioStatus(message, type){
+    envioStatus.textContent = message;
+    envioStatus.className = 'dz-status ' + (type || '');
+  }
+
+  btnRegistrarEnvio.addEventListener('click', () => {
+    const data = collectEnvioData();
+
+    if (!data.sucursal || !data.fechaEnvio || !data.juntaJVPLC || !data.transportista){
+      showEnvioStatus('Completa Sucursal, Fecha de envío, N° Junta JVPLC y Transportista.', 'error');
+      return;
+    }
+    if (data.mx === 'Sí' && (!data.mxNombrePaciente || !data.mxCodigo)){
+      showEnvioStatus('MX = Sí: falta el Nombre del paciente o el Código.', 'error');
+      return;
+    }
+
+    if (typeof google === 'undefined' || !google.script || !google.script.run){
+      showEnvioStatus('Este formulario debe abrirse desde su enlace de Apps Script para poder registrar.', 'error');
+      return;
+    }
+
+    const originalText = btnRegistrarEnvio.textContent;
+    btnRegistrarEnvio.disabled = true;
+    btnRegistrarEnvio.textContent = 'Registrando...';
+    showEnvioStatus('Enviando datos...', '');
+
+    google.script.run
+      .withSuccessHandler((result) => {
+        btnRegistrarEnvio.disabled = false;
+        btnRegistrarEnvio.textContent = originalText;
+        if (result && result.success){
+          showEnvioStatus('Envío registrado correctamente.', 'success');
+          loadRegistros();
+        } else {
+          showEnvioStatus((result && result.error ? result.error : 'No se pudo registrar el envío.'), 'error');
+        }
+      })
+      .withFailureHandler((err) => {
+        btnRegistrarEnvio.disabled = false;
+        btnRegistrarEnvio.textContent = originalText;
+        showEnvioStatus('Error de conexión: ' + (err && err.message ? err.message : err), 'error');
+      })
+      .registrarEnvio(data);
+  });
+
+  // ---------- GUARDAR SELLO ----------
+  const btnGuardarSello = document.getElementById('btnGuardarSello');
+  const numeroResponsableInput = document.getElementById('numeroResponsable');
+
+  function sendSello(numeroResponsable, imageBase64, imageMimeType, originalText){
+    google.script.run
+      .withSuccessHandler((result) => {
+        btnGuardarSello.disabled = false;
+        btnGuardarSello.textContent = originalText;
+        if (result && result.success){
+          showDzStatus('Sello guardado correctamente.', 'success');
+          numeroResponsableInput.value = '';
+          clearSelloPreview();
+        } else {
+          showDzStatus((result && result.error ? result.error : 'No se pudo guardar el sello.'), 'error');
+        }
+      })
+      .withFailureHandler((err) => {
+        btnGuardarSello.disabled = false;
+        btnGuardarSello.textContent = originalText;
+        showDzStatus('Error de conexión: ' + (err && err.message ? err.message : err), 'error');
+      })
+      .guardarSello({
+        numeroResponsable: numeroResponsable,
+        imageBase64: imageBase64 || '',
+        imageMimeType: imageMimeType || ''
+      });
+  }
+
+  btnGuardarSello.addEventListener('click', () => {
+    const numeroResponsable = sanitizarTexto(numeroResponsableInput.value, 40);
+
+    if (!numeroResponsable){
+      showDzStatus('Falta el Número de responsable.', 'error');
+      return;
+    }
+
+    if (typeof google === 'undefined' || !google.script || !google.script.run){
+      showDzStatus('Este formulario debe abrirse desde su enlace de Apps Script para poder guardar.', 'error');
+      return;
+    }
+
+    const originalText = btnGuardarSello.textContent;
+    btnGuardarSello.disabled = true;
+    btnGuardarSello.textContent = 'Guardando...';
+
+    if (currentSelloBlob){
+      const reader = new FileReader();
+      reader.onload = () => sendSello(numeroResponsable, reader.result, currentSelloBlob.type, originalText);
+      reader.onerror = () => {
+        btnGuardarSello.disabled = false;
+        btnGuardarSello.textContent = originalText;
+        showDzStatus('No se pudo leer la imagen, intenta de nuevo.', 'error');
+      };
+      reader.readAsDataURL(currentSelloBlob);
+    } else {
+      sendSello(numeroResponsable, '', '', originalText);
+    }
+  });
+
+  // =====================================================================
+  // TABLA DE REGISTROS ENVIADOS — con filtro por Transportista
+  // =====================================================================
+
+  const registrosHeadRow = document.getElementById('registrosHeadRow');
+  const registrosBody = document.getElementById('registrosBody');
+  const registrosStatus = document.getElementById('registrosStatus');
+  const filtroTransportista = document.getElementById('filtroTransportista');
+  const btnRefrescarRegistros = document.getElementById('btnRefrescarRegistros');
+
+  let registrosHeaders = [];
+  let registrosData = [];
+  let chartMuestrasInstance = null;
+  let chartTransportistaInstance = null;
+
+  const COL_MUESTRAS = [
+    { header: 'Dorados', color: '#eab308' },
+    { header: 'Morados', color: '#a855f7' },
+    { header: 'Alícuotas', color: '#3b82f6' },
+    { header: 'Cultivos', color: '#14b8a6' },
+    { header: 'Orina en tubo (pruebas químicas)', color: '#f97316' },
+    { header: 'Alícuotas de suero', color: '#ec4899' }
+  ];
+
+  const PALETA_TRANSPORTISTA = ['#0b1f4d', '#0071e3', '#1fae5c', '#eab308', '#a855f7', '#f97316', '#ec4899', '#14b8a6'];
+
+  function getChartTextColor(){
+    return getComputedStyle(document.documentElement).getPropertyValue('--text-label').trim() || '#6e6e73';
+  }
+
+  function refreshChartColors(){
+    const color = getChartTextColor();
+
+    if (chartMuestrasInstance){
+      chartMuestrasInstance.options.scales.x.ticks.color = color;
+      chartMuestrasInstance.options.scales.y.ticks.color = color;
+      chartMuestrasInstance.update('none');
+    }
+    if (chartTransportistaInstance){
+      chartTransportistaInstance.options.plugins.legend.labels.color = color;
+      chartTransportistaInstance.update('none');
+    }
+  }
+
+  let chartsUnavailableShown = false;
+
+  function mostrarGraficasNoDisponibles(){
+    if (chartsUnavailableShown) return;
+    chartsUnavailableShown = true;
+
+    document.querySelectorAll('.chart-canvas-wrap').forEach(wrap => {
+      wrap.innerHTML = '';
+      const aviso = document.createElement('div');
+      aviso.className = 'chart-fallback';
+      aviso.textContent = 'La librería de gráficas no pudo cargarse. Revisa tu conexión y recarga la página.';
+      wrap.appendChild(aviso);
+    });
+  }
+
+  function actualizarGraficas(filas){
+    if (typeof Chart === 'undefined'){
+      console.warn('Chart.js no está disponible (typeof Chart === "undefined"). Verifica la conexión a internet o si algo está bloqueando cdnjs.cloudflare.com.');
+      mostrarGraficasNoDisponibles();
+      return;
+    }
+
+    const sumasMuestras = COL_MUESTRAS.map(m => filas.reduce((acc, row) => acc + (Number(row[m.header]) || 0), 0));
+
+    const ctxMuestras = document.getElementById('chartMuestras');
+    if (chartMuestrasInstance){
+      chartMuestrasInstance.data.datasets[0].data = sumasMuestras;
+      chartMuestrasInstance.update();
+    } else {
+      chartMuestrasInstance = new Chart(ctxMuestras, {
+        type: 'bar',
+        data: {
+          labels: COL_MUESTRAS.map(m => m.header.replace(' (pruebas químicas)', '')),
+          datasets: [{
+            data: sumasMuestras,
+            backgroundColor: COL_MUESTRAS.map(m => m.color),
+            borderRadius: 6,
+            maxBarThickness: 34
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { font: { size: 10 }, color: getChartTextColor() }, grid: { display: false } },
+            y: { beginAtZero: true, ticks: { precision: 0, font: { size: 10 }, color: getChartTextColor() } }
+          }
+        }
+      });
+    }
+
+    const conteoTransportista = {};
+    filas.forEach(row => {
+      const nombre = row[COL_TRANSPORTISTA] || 'Sin transportista';
+      conteoTransportista[nombre] = (conteoTransportista[nombre] || 0) + 1;
+    });
+    const etiquetasTransportista = Object.keys(conteoTransportista);
+    const valoresTransportista = etiquetasTransportista.map(k => conteoTransportista[k]);
+
+    const ctxTransportista = document.getElementById('chartTransportista');
+    if (chartTransportistaInstance){
+      chartTransportistaInstance.data.labels = etiquetasTransportista;
+      chartTransportistaInstance.data.datasets[0].data = valoresTransportista;
+      chartTransportistaInstance.data.datasets[0].backgroundColor = etiquetasTransportista.map((_, i) => PALETA_TRANSPORTISTA[i % PALETA_TRANSPORTISTA.length]);
+      chartTransportistaInstance.update();
+    } else {
+      chartTransportistaInstance = new Chart(ctxTransportista, {
+        type: 'doughnut',
+        data: {
+          labels: etiquetasTransportista,
+          datasets: [{
+            data: valoresTransportista,
+            backgroundColor: etiquetasTransportista.map((_, i) => PALETA_TRANSPORTISTA[i % PALETA_TRANSPORTISTA.length]),
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 }, color: getChartTextColor() } } }
+        }
+      });
+    }
+  }
+  const COL_TRANSPORTISTA = 'Transportista';
+
+  function showRegistrosStatus(message, type){
+    registrosStatus.textContent = message;
+    registrosStatus.className = 'dz-status ' + (type || '');
+  }
+
+  function formatCellValue(value){
+    if (value === null || value === undefined || value === '') return '—';
+    return String(value);
+  }
+
+  function renderRegistrosTable(){
+    const seleccionado = filtroTransportista.value;
+    const filas = seleccionado
+      ? registrosData.filter(r => r[COL_TRANSPORTISTA] === seleccionado)
+      : registrosData;
+
+    actualizarGraficas(filas);
+
+    registrosBody.innerHTML = '';
+
+    if (!filas.length){
+      const tr = document.createElement('tr');
+      const td = document.createElement('td');
+      td.className = 'records-empty';
+      td.colSpan = registrosHeaders.length || 1;
+      td.textContent = seleccionado
+        ? 'No hay registros para ese transportista.'
+        : 'Todavía no hay registros enviados.';
+      tr.appendChild(td);
+      registrosBody.appendChild(tr);
+      return;
+    }
+
+    filas.forEach(row => {
+      const tr = document.createElement('tr');
+      registrosHeaders.forEach(h => {
+        const td = document.createElement('td');
+        const valorCompleto = formatCellValue(row[h]);
+        if (valorCompleto.length > 60){
+          td.textContent = valorCompleto.slice(0, 60) + '…';
+          td.title = valorCompleto;
+        } else {
+          td.textContent = valorCompleto;
+        }
+        tr.appendChild(td);
+      });
+      registrosBody.appendChild(tr);
+    });
+  }
+
+  function populateFiltroTransportista(){
+    const actual = filtroTransportista.value;
+
+    // Combina el catálogo real de Transportistas (cargado desde Sheets)
+    // con cualquier nombre que aparezca en los registros, por si algún
+    // registro viejo tiene un nombre que ya no está en el catálogo.
+    const desdeCatalogo = transportistasCache || [];
+    const desdeDatos = registrosData.map(r => r[COL_TRANSPORTISTA]).filter(Boolean);
+    const nombres = Array.from(new Set([...desdeCatalogo, ...desdeDatos])).sort();
+
+    filtroTransportista.innerHTML = '<option value="">Todos</option>';
+    nombres.forEach(nombre => {
+      const opt = document.createElement('option');
+      opt.value = nombre;
+      opt.textContent = nombre;
+      filtroTransportista.appendChild(opt);
+    });
+
+    // Conserva la selección previa si sigue existiendo en la lista
+    if (nombres.includes(actual)) filtroTransportista.value = actual;
+  }
+
+  function renderRegistrosHead(){
+    registrosHeadRow.innerHTML = '';
+    registrosHeaders.forEach(h => {
+      const th = document.createElement('th');
+      th.textContent = h;
+      registrosHeadRow.appendChild(th);
+    });
+  }
+
+  function loadRegistros(){
+    showRegistrosStatus('Cargando registros...', '');
+    btnRefrescarRegistros.disabled = true;
+
+    if (typeof google === 'undefined' || !google.script || !google.script.run){
+      showRegistrosStatus('Este formulario debe abrirse desde su enlace de Apps Script para ver los registros.', 'error');
+      btnRefrescarRegistros.disabled = false;
+      return;
+    }
+
+    google.script.run
+      .withSuccessHandler((result) => {
+        btnRefrescarRegistros.disabled = false;
+        console.log('getRegistros() resultado:', result);
+
+        if (!result){
+          showRegistrosStatus('El servidor no devolvió ninguna respuesta. Revisa la consola del navegador (F12) para más detalles.', 'error');
+          return;
+        }
+
+        if (!result.success){
+          showRegistrosStatus((result.error || 'No se pudieron cargar los registros (sin detalle del error).'), 'error');
+          return;
+        }
+
+        registrosHeaders = result.headers || [];
+        registrosData = result.records || [];
+
+        renderRegistrosHead();
+        populateFiltroTransportista();
+        renderRegistrosTable();
+
+        showRegistrosStatus(
+          registrosData.length
+            ? `${registrosData.length} registro(s) cargado(s).`
+            : 'No hay registros todavía.',
+          'success'
+        );
+      })
+      .withFailureHandler((err) => {
+        btnRefrescarRegistros.disabled = false;
+        console.error('getRegistros() error:', err);
+        showRegistrosStatus('Error de conexión: ' + (err && err.message ? err.message : err), 'error');
+      })
+      .getRegistros();
+  }
+
+  filtroTransportista.addEventListener('change', renderRegistrosTable);
+  btnRefrescarRegistros.addEventListener('click', loadRegistros);
+
+  // Cargar la tabla al abrir el formulario
+  loadRegistros();
+
+  // El botón "Ver Registro en Sheets" también refresca la tabla de abajo
+  document.getElementById('btnVerRegistro').addEventListener('click', () => {
+    loadRegistros();
+    document.getElementById('registrosSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // Después de registrar un envío con éxito, refresca la tabla automáticamente
+
+  // =====================================================================
+  // N° JUNTA JVPLC — leído y gestionado DIRECTO desde una pestaña de Sheets
+  // =====================================================================
+  //
+  // Este bloque asume 3 funciones en Código.gs (backend, se agregan
+  // en el siguiente paso):
+  //
+  //   getJuntas()            -> { success: true,  juntas: ["Ana Pérez 1234", ...] }
+  //                              lee la columna única "N° Junta JVPLC"
+  //                              de su propia pestaña en la Sheet.
+  //   agregarJunta(nombre)   -> { success: true }  agrega una fila nueva.
+  //   eliminarJunta(nombre)  -> { success: true }  elimina la fila exacta.
+  //
+  // Mientras esas funciones no existan en el backend, el selector y el
+  // modal muestran un aviso claro en vez de fallar en silencio.
+
+  const juntaSelect = document.getElementById('juntaJVPLC');
+  const juntaModalOverlay = document.getElementById('juntaModalOverlay');
+  const juntaModalList = document.getElementById('juntaModalList');
+  const juntaModalInput = document.getElementById('juntaModalInput');
+  const juntaModalAddBtn = document.getElementById('juntaModalAddBtn');
+  const juntaModalClose = document.getElementById('juntaModalClose');
+  const btnGestionarJuntas = document.getElementById('btnGestionarJuntas');
+  const juntaModalStatus = document.getElementById('juntaModalStatus');
+
+  let juntasCache = [];
+
+  function hasGoogleScriptRun(){
+    return typeof google !== 'undefined' && !!google.script && !!google.script.run;
+  }
+
+  function showJuntaModalStatus(message, type){
+    juntaModalStatus.textContent = message;
+    juntaModalStatus.className = 'dz-status ' + (type || '');
+  }
+
+  function renderJuntaSelect(list, selectedValue){
+    const previous = selectedValue !== undefined ? selectedValue : juntaSelect.value;
+    juntaSelect.innerHTML = '<option value="" disabled selected>Seleccionar...</option>';
+    list.forEach(nombre => {
+      const opt = document.createElement('option');
+      opt.value = nombre;
+      opt.textContent = nombre;
+      juntaSelect.appendChild(opt);
+    });
+    if (previous && list.includes(previous)) juntaSelect.value = previous;
+  }
+
+  function renderJuntaModalList(list){
+    juntaModalList.innerHTML = '';
+
+    if (!list.length){
+      const li = document.createElement('li');
+      li.className = 'modal-empty';
+      li.textContent = 'No hay ninguna Junta registrada todavía.';
+      juntaModalList.appendChild(li);
+      return;
+    }
+
+    list.forEach(nombre => {
+      const li = document.createElement('li');
+
+      const span = document.createElement('span');
+      span.textContent = nombre;
+
+      const delBtn = document.createElement('button');
+      delBtn.type = 'button';
+      delBtn.className = 'modal-delete-btn';
+      delBtn.textContent = '✕';
+      delBtn.setAttribute('aria-label', 'Eliminar ' + nombre);
+      delBtn.addEventListener('click', () => eliminarJuntaRemota(nombre));
+
+      li.appendChild(span);
+      li.appendChild(delBtn);
+      juntaModalList.appendChild(li);
+    });
+  }
+
+  /**
+   * Carga la lista de Juntas directo desde la Sheet.
+   * @param {string} [seleccionarDespues] - si se indica, esa opción queda
+   *   seleccionada en el formulario una vez recargada la lista.
+   */
+  function cargarJuntas(seleccionarDespues){
+    if (!hasGoogleScriptRun()){
+      showJuntaModalStatus('Este formulario debe abrirse desde su enlace de Apps Script para leer la Sheet.', 'error');
+      juntaSelect.innerHTML = '<option value="" disabled selected>No disponible sin conexión</option>';
+      return;
+    }
+
+    showJuntaModalStatus('Cargando desde la hoja de cálculo...', '');
+
+    google.script.run
+      .withSuccessHandler((result) => {
+        console.log('getJuntas() resultado:', result);
+
+        if (!result || !result.success){
+          showJuntaModalStatus((result && result.error ? result.error : 'No se pudieron cargar las Juntas.'), 'error');
+          return;
+        }
+
+        juntasCache = result.juntas || [];
+        renderJuntaModalList(juntasCache);
+        renderJuntaSelect(juntasCache, seleccionarDespues);
+        showJuntaModalStatus('', '');
+      })
+      .withFailureHandler((err) => {
+        console.error('getJuntas() error:', err);
+        showJuntaModalStatus('Error de conexión: ' + (err && err.message ? err.message : err), 'error');
+      })
+      .getJuntas();
+  }
+
+  function openJuntaModal(){
+    juntaModalInput.value = '';
+    juntaModalOverlay.classList.add('open');
+    renderJuntaModalList(juntasCache);
+    cargarJuntas(); // siempre refresca al abrir, por si alguien más agregó una
+    setTimeout(() => juntaModalInput.focus(), 150);
+  }
+
+  function closeJuntaModal(){
+    juntaModalOverlay.classList.remove('open');
+  }
+
+  btnGestionarJuntas.addEventListener('click', openJuntaModal);
+  juntaModalClose.addEventListener('click', closeJuntaModal);
+
+  juntaModalOverlay.addEventListener('click', (e) => {
+    if (e.target === juntaModalOverlay) closeJuntaModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && juntaModalOverlay.classList.contains('open')) closeJuntaModal();
+  });
+
+  function agregarJuntaRemota(){
+    const valor = sanitizarTexto(juntaModalInput.value, 80);
+    if (!valor) return;
+
+    if (juntasCache.some(n => n.toLowerCase() === valor.toLowerCase())){
+      showJuntaModalStatus('Ese N° de Junta ya existe en la lista.', 'error');
+      return;
+    }
+
+    if (!hasGoogleScriptRun()){
+      showJuntaModalStatus('Este formulario debe abrirse desde su enlace de Apps Script.', 'error');
+      return;
+    }
+
+    const originalText = juntaModalAddBtn.textContent;
+    juntaModalAddBtn.disabled = true;
+    juntaModalAddBtn.textContent = 'Guardando...';
+    showJuntaModalStatus('Guardando en la hoja de cálculo...', '');
+
+    google.script.run
+      .withSuccessHandler((result) => {
+        juntaModalAddBtn.disabled = false;
+        juntaModalAddBtn.textContent = originalText;
+
+        if (result && result.success){
+          juntaModalInput.value = '';
+          showJuntaModalStatus('Agregado correctamente.', 'success');
+          cargarJuntas(valor);
+        } else {
+          showJuntaModalStatus((result && result.error ? result.error : 'No se pudo agregar.'), 'error');
+        }
+      })
+      .withFailureHandler((err) => {
+        juntaModalAddBtn.disabled = false;
+        juntaModalAddBtn.textContent = originalText;
+        showJuntaModalStatus('Error de conexión: ' + (err && err.message ? err.message : err), 'error');
+      })
+      .agregarJunta(valor);
+  }
+
+  function eliminarJuntaRemota(nombre){
+    const confirmado = window.confirm(`¿Eliminar "${nombre}" de la lista de N° Junta JVPLC?\n\nEsta acción se aplica directamente en la hoja de cálculo y no se puede deshacer.`);
+    if (!confirmado) return;
+
+    if (!hasGoogleScriptRun()){
+      showJuntaModalStatus('Este formulario debe abrirse desde su enlace de Apps Script.', 'error');
+      return;
+    }
+
+    showJuntaModalStatus('Eliminando de la hoja de cálculo...', '');
+
+    google.script.run
+      .withSuccessHandler((result) => {
+        if (result && result.success){
+          showJuntaModalStatus('Eliminado correctamente.', 'success');
+          cargarJuntas();
+        } else {
+          showJuntaModalStatus((result && result.error ? result.error : 'No se pudo eliminar.'), 'error');
+        }
+      })
+      .withFailureHandler((err) => {
+        showJuntaModalStatus('Error de conexión: ' + (err && err.message ? err.message : err), 'error');
+      })
+      .eliminarJunta(nombre);
+  }
+
+  juntaModalAddBtn.addEventListener('click', agregarJuntaRemota);
+  juntaModalInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter'){
+      e.preventDefault();
+      agregarJuntaRemota();
+    }
+  });
+
+  // Cargar la lista de Juntas apenas abre el formulario
+  cargarJuntas();
+
+  // =====================================================================
+  // TRANSPORTISTA — leído y gestionado DIRECTO desde una pestaña de Sheets
+  // =====================================================================
+  //
+  // Misma lógica que N° Junta JVPLC. Este bloque asume 3 funciones en
+  // Código.gs (backend, se agregan en el siguiente paso):
+  //
+  //   getTransportistas()            -> { success: true, transportistas: ["Melis", "José", ...] }
+  //   agregarTransportista(nombre)   -> { success: true }
+  //   eliminarTransportista(nombre)  -> { success: true }
+
+  const transportistaSelect = document.getElementById('transportista');
+  const transportistaModalOverlay = document.getElementById('transportistaModalOverlay');
+  const transportistaModalList = document.getElementById('transportistaModalList');
+  const transportistaModalInput = document.getElementById('transportistaModalInput');
+  const transportistaModalAddBtn = document.getElementById('transportistaModalAddBtn');
+  const transportistaModalClose = document.getElementById('transportistaModalClose');
+  const btnGestionarTransportistas = document.getElementById('btnGestionarTransportistas');
+  const transportistaModalStatus = document.getElementById('transportistaModalStatus');
+
+  let transportistasCache = [];
+
+  function showTransportistaModalStatus(message, type){
+    transportistaModalStatus.textContent = message;
+    transportistaModalStatus.className = 'dz-status ' + (type || '');
+  }
+
+  function renderTransportistaSelect(list, selectedValue){
+    const previous = selectedValue !== undefined ? selectedValue : transportistaSelect.value;
+    transportistaSelect.innerHTML = '<option value="" disabled selected>Seleccionar...</option>';
+    list.forEach(nombre => {
+      const opt = document.createElement('option');
+      opt.value = nombre;
+      opt.textContent = nombre;
+      transportistaSelect.appendChild(opt);
+    });
+    if (previous && list.includes(previous)) transportistaSelect.value = previous;
+  }
+
+  function renderTransportistaModalList(list){
+    transportistaModalList.innerHTML = '';
+
+    if (!list.length){
+      const li = document.createElement('li');
+      li.className = 'modal-empty';
+      li.textContent = 'No hay ningún Transportista registrado todavía.';
+      transportistaModalList.appendChild(li);
+      return;
+    }
+
+    list.forEach(nombre => {
+      const li = document.createElement('li');
+
+      const span = document.createElement('span');
+      span.textContent = nombre;
+
+      const delBtn = document.createElement('button');
+      delBtn.type = 'button';
+      delBtn.className = 'modal-delete-btn';
+      delBtn.textContent = '✕';
+      delBtn.setAttribute('aria-label', 'Eliminar ' + nombre);
+      delBtn.addEventListener('click', () => eliminarTransportistaRemoto(nombre));
+
+      li.appendChild(span);
+      li.appendChild(delBtn);
+      transportistaModalList.appendChild(li);
+    });
+  }
+
+  /**
+   * Carga la lista de Transportistas directo desde la Sheet, y refresca
+   * también el filtro de la tabla de registros con el catálogo más reciente.
+   * @param {string} [seleccionarDespues]
+   */
+  function cargarTransportistas(seleccionarDespues){
+    if (!hasGoogleScriptRun()){
+      showTransportistaModalStatus('Este formulario debe abrirse desde su enlace de Apps Script para leer la Sheet.', 'error');
+      transportistaSelect.innerHTML = '<option value="" disabled selected>No disponible sin conexión</option>';
+      return;
+    }
+
+    showTransportistaModalStatus('Cargando desde la hoja de cálculo...', '');
+
+    google.script.run
+      .withSuccessHandler((result) => {
+        console.log('getTransportistas() resultado:', result);
+
+        if (!result || !result.success){
+          showTransportistaModalStatus((result && result.error ? result.error : 'No se pudieron cargar los Transportistas.'), 'error');
+          return;
+        }
+
+        transportistasCache = result.transportistas || [];
+        renderTransportistaModalList(transportistasCache);
+        renderTransportistaSelect(transportistasCache, seleccionarDespues);
+        showTransportistaModalStatus('', '');
+
+        // El filtro de la tabla de registros usa este mismo catálogo
+        populateFiltroTransportista();
+        renderRegistrosTable();
+      })
+      .withFailureHandler((err) => {
+        console.error('getTransportistas() error:', err);
+        showTransportistaModalStatus('Error de conexión: ' + (err && err.message ? err.message : err), 'error');
+      })
+      .getTransportistas();
+  }
+
+  function openTransportistaModal(){
+    transportistaModalInput.value = '';
+    transportistaModalOverlay.classList.add('open');
+    renderTransportistaModalList(transportistasCache);
+    cargarTransportistas(); // siempre refresca al abrir, por si alguien más agregó uno
+    setTimeout(() => transportistaModalInput.focus(), 150);
+  }
+
+  function closeTransportistaModal(){
+    transportistaModalOverlay.classList.remove('open');
+  }
+
+  btnGestionarTransportistas.addEventListener('click', openTransportistaModal);
+  transportistaModalClose.addEventListener('click', closeTransportistaModal);
+
+  transportistaModalOverlay.addEventListener('click', (e) => {
+    if (e.target === transportistaModalOverlay) closeTransportistaModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && transportistaModalOverlay.classList.contains('open')) closeTransportistaModal();
+  });
+
+  function agregarTransportistaRemoto(){
+    const valor = sanitizarTexto(transportistaModalInput.value, 80);
+    if (!valor) return;
+
+    if (transportistasCache.some(n => n.toLowerCase() === valor.toLowerCase())){
+      showTransportistaModalStatus('Ese Transportista ya existe en la lista.', 'error');
+      return;
+    }
+
+    if (!hasGoogleScriptRun()){
+      showTransportistaModalStatus('Este formulario debe abrirse desde su enlace de Apps Script.', 'error');
+      return;
+    }
+
+    const originalText = transportistaModalAddBtn.textContent;
+    transportistaModalAddBtn.disabled = true;
+    transportistaModalAddBtn.textContent = 'Guardando...';
+    showTransportistaModalStatus('Guardando en la hoja de cálculo...', '');
+
+    google.script.run
+      .withSuccessHandler((result) => {
+        transportistaModalAddBtn.disabled = false;
+        transportistaModalAddBtn.textContent = originalText;
+
+        if (result && result.success){
+          transportistaModalInput.value = '';
+          showTransportistaModalStatus('Agregado correctamente.', 'success');
+          cargarTransportistas(valor);
+        } else {
+          showTransportistaModalStatus((result && result.error ? result.error : 'No se pudo agregar.'), 'error');
+        }
+      })
+      .withFailureHandler((err) => {
+        transportistaModalAddBtn.disabled = false;
+        transportistaModalAddBtn.textContent = originalText;
+        showTransportistaModalStatus('Error de conexión: ' + (err && err.message ? err.message : err), 'error');
+      })
+      .agregarTransportista(valor);
+  }
+
+  function eliminarTransportistaRemoto(nombre){
+    const confirmado = window.confirm(`¿Eliminar "${nombre}" de la lista de Transportistas?\n\nEsta acción se aplica directamente en la hoja de cálculo y no se puede deshacer.`);
+    if (!confirmado) return;
+
+    if (!hasGoogleScriptRun()){
+      showTransportistaModalStatus('Este formulario debe abrirse desde su enlace de Apps Script.', 'error');
+      return;
+    }
+
+    showTransportistaModalStatus('Eliminando de la hoja de cálculo...', '');
+
+    google.script.run
+      .withSuccessHandler((result) => {
+        if (result && result.success){
+          showTransportistaModalStatus('Eliminado correctamente.', 'success');
+          cargarTransportistas();
+        } else {
+          showTransportistaModalStatus((result && result.error ? result.error : 'No se pudo eliminar.'), 'error');
+        }
+      })
+      .withFailureHandler((err) => {
+        showTransportistaModalStatus('Error de conexión: ' + (err && err.message ? err.message : err), 'error');
+      })
+      .eliminarTransportista(nombre);
+  }
+
+  transportistaModalAddBtn.addEventListener('click', agregarTransportistaRemoto);
+  transportistaModalInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter'){
+      e.preventDefault();
+      agregarTransportistaRemoto();
+    }
+  });
+
+  // Cargar la lista de Transportistas apenas abre el formulario
+  cargarTransportistas();
+</script>
+
+</body>
+</html>
